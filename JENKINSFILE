@@ -1,0 +1,61 @@
+pipeline {
+    agent any
+/*******************************Declare Global variables*************************************************/
+environment {
+    DIR_PROJECT = "$WORKSPACE"
+  }
+    stages {
+  /******************************* Source branch *************************************************/
+    stage('Code Checkout') {
+      steps {
+          cleanWs()
+          dir("$DIR_PROJECT") {
+             git branch: "main", changelog: false, poll: false, credentialsId: 'XXXXXX', url: "https://github.com/ShivaniMuduru/VEERUM.git"
+          }
+            } 
+        }
+  /******************************* Setting Terraform Environment  *************************************************/
+    stage('Set Terraform path') {
+        steps {
+          script {
+            def tfHome = tool name: 'Terraform'
+            env.PATH = "${tfHome}:${env.PATH}"
+            def dirpath = "${WORKSPACE}/terraform-aws-s3-bucket"
+              echo dirpath
+              dir(dirpath) { 
+                  fileOperations([fileCopyOperation(
+                    excludes: '',
+                    flattenFiles: false,
+                    includes: '',
+                    targetLocation: "${WORKSPACE}".trim()
+                  )])   
+            }
+          } 
+            sh 'terraform version' 
+        }
+      }
+  /******************************* Terraform Init and Plan *****************************************/ 
+    stage('TF Init and Plan') {
+            steps {
+                script{   
+                     dir("${WORKSPACE}".trim()) {
+                            sh "echo TERRAFORM INIT"
+                            sh "terraform init"
+                            sh "terraform plan -no-color -out=terraform.tfplan"
+                            sh "terraform show terraform.tfplan"
+                    }
+                }  
+              }           
+      }
+  /******************************* Terraform Apply *****************************************/
+    stage('TF Apply') {
+        steps {
+          dir("${WORKSPACE}".trim()) {
+          sh "terraform init"
+          sh 'terraform apply -no-color -auto-approve'
+          }
+        }
+      }
+    }
+    
+}
