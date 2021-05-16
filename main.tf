@@ -16,7 +16,7 @@ provider "aws" {
 }
 
 resource "random_pet" "this" {
-  length = 2
+  length = 3
 }
 
 data "aws_caller_identity" "current" {}
@@ -46,7 +46,7 @@ module "replica_bucket" {
   }
   
  website = {
-   enabled = true
+   enabled = false
    index_document = "index.html"
       error_document = "error.html"
    routing_rules = jsonencode([{
