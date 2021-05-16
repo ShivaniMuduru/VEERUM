@@ -16,7 +16,7 @@ provider "aws" {
 }
 
 resource "random_pet" "this" {
-  length = 3
+  length = 2
 }
 
 data "aws_caller_identity" "current" {}
@@ -25,7 +25,7 @@ resource "aws_kms_key" "replica" {
   provider = "aws.replica"
 
   description             = "S3 bucket replication KMS key"
-  deletion_window_in_days = 8
+  deletion_window_in_days = 7
 }
 
 module "replica_bucket" {
