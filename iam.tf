@@ -3,7 +3,7 @@ resource "aws_iam_role" "replication" {
 
   assume_role_policy = <<POLICY
 {
-  "Version": "2012-10-17",
+  "Version": "2012-10-19",
   "Statement": [
     {
       "Action": "sts:AssumeRole",
