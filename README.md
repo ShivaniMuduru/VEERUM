@@ -9,7 +9,7 @@ This project has acted as terraform version 0.12.26. Before you can run the test
 ​
 | Resource                       | Terraform version             
 |--------------------------------|--------------------|
-| S3 bucket                      |        0.12.26      |
+| S3 bucket                      |        0.12.28    |
 ​
 ## Install Terraform
 ​
