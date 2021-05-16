@@ -46,7 +46,7 @@ module "replica_bucket" {
   }
   
  website = {
-   enabled = true
+   enabled = false
    index_document = "index.html"
       error_document = "error.html"
    routing_rules = jsonencode([{
